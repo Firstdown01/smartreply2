@@ -1,5 +1,6 @@
 package com.example.smartreply2
 
+import android.R.attr.duration
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
@@ -7,6 +8,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.utilities.Score.score
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType
@@ -59,34 +61,43 @@ class Recyclerview : AppCompatActivity() {
     fun call(question: String) {
             var key = "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"
             var url = "https://api.openai.com/v1/completions"
-            lateinit var jsobj: JSONObject
+             var jsobj=JSONObject()
             jsobj.put("model", "text-davinci-003")
             jsobj.put("prompt", question)
             jsobj.put("max_tokens", 7)
             jsobj.put("temperature", 0)
+
 
             var body: RequestBody = jsobj.toString().toRequestBody(JSON)
             val request:Request =
 
                    Request.Builder()
                         .url("https://api.openai.com/v1/completions")
-                        .header("Authorization", "Bearer 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")
+                        .header("Authorization", "Bearer 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")
                         .post(body)
                         .build()
 
-        Toast.makeText(this@Recyclerview,"url",Toast.LENGTH_LONG).show()
+
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     addToChat("fault",true)
                 }
                 override fun onResponse(call: Call, response: Response) {
+
+
                     if(response.isSuccessful){
                         var jsonobj=JSONObject(response.body?.string())
                         var jsonarray=jsonobj.getJSONArray("choices")
                         var result=jsonarray.getJSONObject(0).get("text")
+                        runOnUiThread {
+
+                            Toast.makeText(this@Recyclerview, result.toString(),Toast.LENGTH_LONG).show()
+
+                        }
                         addToChat(result.toString(),true)
                     }
                     else{
+
                         addToChat("failed",true)
                     }
 
