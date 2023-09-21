@@ -73,7 +73,7 @@ class Recyclerview : AppCompatActivity() {
 
                    Request.Builder()
                         .url("https://api.openai.com/v1/completions")
-                        .header("Authorization", "Bearer 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")
+                        .header("Authorization", "Bearer ")
                         .post(body)
                         .build()
 
@@ -84,16 +84,16 @@ class Recyclerview : AppCompatActivity() {
                 }
                 override fun onResponse(call: Call, response: Response) {
 
-
+//                    runOnUiThread {
+//
+//                        Toast.makeText(this@Recyclerview, response.isSuccessful.toString(),Toast.LENGTH_LONG).show()
+//
+//                    }
                     if(response.isSuccessful){
                         var jsonobj=JSONObject(response.body?.string())
                         var jsonarray=jsonobj.getJSONArray("choices")
                         var result=jsonarray.getJSONObject(0).get("text")
-                        runOnUiThread {
 
-                            Toast.makeText(this@Recyclerview, result.toString(),Toast.LENGTH_LONG).show()
-
-                        }
                         addToChat(result.toString(),true)
                     }
                     else{
