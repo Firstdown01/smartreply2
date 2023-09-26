@@ -59,7 +59,7 @@ class Recyclerview : AppCompatActivity() {
 
     @RequiresApi(34)
     fun call(question: String) {
-            var key = "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"
+            var key = ""
             var url = "https://api.openai.com/v1/completions"
              var jsobj=JSONObject()
             jsobj.put("model", "text-davinci-003")
